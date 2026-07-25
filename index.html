@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Filing Room, a leg of Carter Enterprise LLC</title>
+<meta name="description" content="The Filing Room is a dated public ledger that logs official filings before they become headlines. The public record before the headline.">
+<meta name="robots" content="index, follow">
+
+<!-- LOCKED MARK: drop filing_room_mark.svg here -->
+
+<style>
+  :root{
+    --navy: #0A1A2F;
+    --navy-2: #0E2238;
+    --navy-3: #0C1E33;
+    --line: rgba(212,175,55,0.22);
+    --line-strong: rgba(212,175,55,0.45);
+    --gold: #D4AF37;
+    --gold-soft: rgba(212,175,55,0.14);
+    --off: #F1EEE3;
+    --off-dim: rgba(241,238,227,0.68);
+    --off-faint: rgba(241,238,227,0.46);
+    --red: #B65C4A;
+    --serif: Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+    --maxw: 1120px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation:none !important; transition:none !important;} }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(212,175,55,0.06), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(212,175,55,0.05), transparent 55%),
+      var(--navy);
+    color:var(--off);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--gold); text-decoration-color: rgba(212,175,55,0.4); text-underline-offset:3px;}
+  a:hover{text-decoration-color: var(--gold);}
+  a:focus-visible, button:focus-visible, summary:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+
+  .skip-link{
+    position:absolute; left:-999px; top:0; background:var(--gold); color:var(--navy);
+    padding:10px 16px; font-weight:700; z-index:200; border-radius:0 0 6px 0;
+  }
+  .skip-link:focus{ left:0; }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+
+  /* ---------- NAV ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(10,26,47,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav-inner{
+    max-width:var(--maxw); margin:0 auto; padding:12px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .nav-mark{ font-family:var(--serif); letter-spacing:0.06em; font-size:15px; font-weight:700; color:var(--off); white-space:nowrap; }
+  .nav-mark span{ color:var(--gold); }
+  .nav-links{ display:flex; gap:20px; flex-wrap:wrap; }
+  .nav-links a{ font-size:13px; color:var(--off-dim); text-decoration:none; letter-spacing:0.02em; }
+  .nav-links a:hover, .nav-links a.active{ color:var(--gold); }
+  .nav-toggle{
+    display:none; background:none; border:1px solid var(--line-strong); color:var(--off);
+    padding:6px 10px; border-radius:4px; font-size:13px; cursor:pointer; font-family:var(--sans);
+  }
+  @media (max-width: 760px){
+    .nav-links{
+      display:none; position:absolute; left:0; right:0; top:100%;
+      background:var(--navy-2); border-bottom:1px solid var(--line);
+      flex-direction:column; padding:14px 24px; gap:14px;
+    }
+    .nav-links.open{ display:flex; }
+    .nav-toggle{ display:inline-block; }
+  }
+
+  /* ---------- MASTHEAD ---------- */
+  header.masthead{ padding:64px 0 40px; text-align:center; border-bottom:1px solid var(--line); }
+  .kicker{
+    font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--off-faint);
+    margin-bottom:22px;
+  }
+  .kicker a{ color:var(--off-faint); text-decoration:none; border-bottom:1px dotted var(--off-faint); }
+  .kicker a:hover{ color:var(--gold); border-color:var(--gold); }
+
+  .wordmark{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(34px, 6vw, 64px);
+    letter-spacing:0.05em;
+    margin:0 0 6px;
+    color:var(--off);
+  }
+  .wordmark .r{ color:var(--gold); }
+  .wordmark-rule{ width:64px; height:1px; background:var(--gold); margin:18px auto; opacity:0.6; }
+
+  .ethos{
+    font-family:var(--serif); font-style:italic; font-size:clamp(17px,2.4vw,22px);
+    color:var(--gold); margin:0 0 16px;
+  }
+  .what-it-is{
+    max-width:620px; margin:0 auto 30px; color:var(--off-dim); font-size:15.5px; line-height:1.6;
+  }
+  .house-rule{
+    display:inline-block; font-family:var(--mono); font-size:12px; letter-spacing:0.05em;
+    color:var(--navy); background:var(--gold); padding:8px 16px; border-radius:2px; margin-bottom:34px;
+  }
+
+  .trust-strip{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+    max-width:820px; margin:0 auto; border:1px solid var(--line); border-radius:6px; overflow:hidden;
+  }
+  .trust-item{
+    padding:18px 16px; border-right:1px solid var(--line); text-align:left;
+  }
+  .trust-item:last-child{ border-right:none; }
+  .trust-item h4{
+    margin:0 0 6px; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold);
+  }
+  .trust-item p{ margin:0; font-size:12.5px; color:var(--off-dim); line-height:1.5; }
+  @media (max-width:680px){
+    .trust-strip{ grid-template-columns:1fr; }
+    .trust-item{ border-right:none; border-bottom:1px solid var(--line); }
+    .trust-item:last-child{ border-bottom:none; }
+  }
+
+  /* ---------- MAIN LAYOUT ---------- */
+  main{ padding:56px 0 20px; }
+
+  .section-lede{ max-width:720px; margin:0 auto 48px; text-align:center; }
+  .section-lede h2{
+    font-family:var(--serif); font-size:clamp(22px,3vw,30px); margin:0 0 12px; color:var(--off);
+  }
+  .section-lede p{ color:var(--off-dim); font-size:15px; }
+
+  .wing{ padding:52px 0; border-top:1px solid var(--line); }
+  .wing:first-of-type{ border-top:none; }
+
+  .wing-header{ margin-bottom:26px; }
+  .wing-eyebrow{
+    font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:8px;
+  }
+  .wing-title{
+    font-family:var(--serif); font-size:clamp(21px,2.6vw,28px); margin:0 0 10px; color:var(--off);
+  }
+  .wing-sub{ color:var(--off-dim); font-size:14.5px; max-width:680px; margin:0; }
+
+  .entry-grid{ display:flex; flex-direction:column; gap:16px; margin-top:22px; }
+
+  .entry{
+    display:grid; grid-template-columns:118px 1fr; gap:20px;
+    padding:20px 22px; background:var(--navy-2); border:1px solid var(--line); border-radius:6px;
+  }
+  @media (max-width:640px){ .entry{ grid-template-columns:1fr; gap:8px; } }
+
+  .entry-date{ font-family:var(--mono); color:var(--gold); font-size:13.5px; padding-top:2px; }
+  .entry-date .yr-lbl{ display:block; color:var(--off-faint); font-size:10.5px; letter-spacing:0.08em; margin-top:4px; }
+
+  .entry-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .entry-title{ font-family:var(--serif); font-size:17px; margin:0; color:var(--off); }
+
+  .badge{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:0.04em; white-space:nowrap;
+    padding:4px 9px; border-radius:20px; border:1px solid var(--line-strong); color:var(--gold);
+    background:var(--gold-soft);
+  }
+  .badge.miss{ color:#E7C9BE; border-color:rgba(182,92,74,0.6); background:rgba(182,92,74,0.16); }
+  .badge.wire{ color:var(--off-dim); border-color:rgba(241,238,227,0.25); background:rgba(241,238,227,0.05); }
+
+  .entry-meta, .entry-why, .entry-source{ margin:9px 0 0; font-size:13.8px; color:var(--off-dim); }
+  .entry-meta strong, .entry-why strong{ color:var(--off); font-weight:600; }
+  .entry-source a{ font-family:var(--mono); font-size:12.8px; }
+
+  .entry-disclaimer{
+    margin:12px 0 0; padding-top:10px; border-top:1px dashed var(--line);
+    font-size:11.8px; color:var(--off-faint); font-style:italic; line-height:1.5;
+  }
+
+  .entry-footer{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; flex-wrap:wrap; }
+  .copy-btn{
+    background:none; border:1px solid var(--line-strong); color:var(--off-dim);
+    font-family:var(--mono); font-size:11px; padding:5px 10px; border-radius:4px; cursor:pointer;
+  }
+  .copy-btn:hover{ color:var(--gold); border-color:var(--gold); }
+  .copy-btn.copied{ color:var(--navy); background:var(--gold); border-color:var(--gold); }
+
+  /* OCC table */
+  .occ-table-wrap{ overflow-x:auto; margin-top:22px; border:1px solid var(--line); border-radius:6px; }
+  table.occ-table{ width:100%; border-collapse:collapse; min-width:560px; background:var(--navy-2); }
+  table.occ-table th, table.occ-table td{
+    text-align:left; padding:12px 16px; font-size:13.6px; border-bottom:1px solid var(--line);
+  }
+  table.occ-table th{
+    font-family:var(--mono); font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--gold); background:rgba(212,175,55,0.05);
+  }
+  table.occ-table td.date{ font-family:var(--mono); color:var(--gold); }
+  table.occ-table tr:last-child td{ border-bottom:none; }
+  table.occ-table td.entity{ color:var(--off); font-weight:600; }
+  .occ-note{ margin-top:14px; font-size:12.5px; color:var(--off-faint); font-style:italic; }
+
+  /* Coming online lanes */
+  .lane-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px; }
+  @media (max-width:820px){ .lane-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .lane-grid{ grid-template-columns:1fr; } }
+  .lane-card{
+    padding:18px; background:var(--navy-2); border:1px solid var(--line); border-radius:6px;
+  }
+  .lane-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; }
+  .lane-name{ font-family:var(--serif); font-size:15.5px; color:var(--off); }
+  .lane-tag{ font-family:var(--mono); font-size:10px; color:var(--off-faint); }
+  .lane-desc{ font-size:13px; color:var(--off-dim); margin:0; }
+
+  /* Method box */
+  .method-box{
+    max-width:820px; margin:0 auto; padding:28px 30px; background:var(--navy-2);
+    border:1px solid var(--line-strong); border-radius:8px;
+  }
+  .method-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin:22px 0; }
+  @media (max-width:640px){ .method-grid{ grid-template-columns:1fr; } }
+  .method-item h4{ margin:0 0 6px; font-size:13px; color:var(--gold); letter-spacing:0.03em; }
+  .method-item p{ margin:0; font-size:13.5px; color:var(--off-dim); }
+  .method-rule{
+    margin-top:22px; padding-top:18px; border-top:1px solid var(--line);
+    font-family:var(--serif); font-style:italic; font-size:15px; color:var(--off); text-align:center;
+  }
+
+  /* Pricing */
+  .pricing-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-top:26px; }
+  @media (max-width:980px){ .pricing-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .pricing-grid{ grid-template-columns:1fr; } }
+  .price-card{
+    padding:22px 18px; background:var(--navy-2); border:1px solid var(--line); border-radius:8px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .price-card.highlight{ border-color:var(--gold); box-shadow:0 0 0 1px rgba(212,175,55,0.25) inset; }
+  .price-tier{ font-family:var(--mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--off-faint); }
+  .price-amt{ font-family:var(--serif); font-size:24px; color:var(--gold); }
+  .price-amt small{ font-family:var(--sans); font-size:12px; color:var(--off-faint); }
+  .price-desc{ font-size:12.8px; color:var(--off-dim); line-height:1.5; margin:0; }
+
+  /* Footer */
+  footer{ border-top:1px solid var(--line); margin-top:60px; padding:48px 0 40px; }
+  .footer-grid{ display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr 1fr; gap:28px; }
+  @media (max-width:860px){ .footer-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:520px){ .footer-grid{ grid-template-columns:1fr; } }
+  .footer-brand .wordmark{ font-size:20px; margin-bottom:10px; text-align:left; }
+  .footer-brand p{ font-size:12.8px; color:var(--off-faint); max-width:280px; }
+  .footer-col h5{
+    margin:0 0 12px; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold);
+  }
+  .footer-col a{
+    display:block; font-size:13px; color:var(--off-dim); text-decoration:none; margin-bottom:9px;
+  }
+  .footer-col a:hover{ color:var(--gold); }
+  .footer-col p.small{ font-size:12px; color:var(--off-faint); margin:0 0 9px; }
+
+  .legal-strip{
+    margin-top:38px; padding-top:22px; border-top:1px solid var(--line);
+    font-size:11.5px; color:var(--off-faint); line-height:1.7;
+  }
+  .legal-strip p{ margin:0 0 10px; }
+  .legal-strip .fine{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:16px; }
+
+  .hidden-when-js{ }
+  .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to ledger</a>
+
+<nav class="topnav" aria-label="Primary">
+  <div class="topnav-inner">
+    <div class="nav-mark">THE FILING <span>ROOM</span></div>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#regulatory-pipeline">Regulatory Pipeline</a>
+      <a href="#stablecoin-aml">Stablecoin AML</a>
+      <a href="#charters">Charters</a>
+      <a href="#securities">Securities</a>
+      <a href="#deadline-misses">Deadline Misses</a>
+      <a href="#coming-online">Coming Online</a>
+      <a href="#method">Method</a>
+      <a href="#access">Access</a>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="kicker">Carter Enterprise LLC &nbsp;/&nbsp; <a href="/receipts-index">The Receipts Index</a></div>
+    <h1 class="wordmark">THE FILING <span class="r">ROOM</span></h1>
+    <div class="wordmark-rule"></div>
+    <p class="ethos">The public record before the headline.</p>
+    <p class="what-it-is">
+      The Filing Room is a dated, source-linked ledger of official regulatory filings, charter applications,
+      and disclosures. We log the document, the date, and the agency. What happens next is not our department.
+    </p>
+    <div class="house-rule">REAL NUMBERS. NO HYPE. RECEIPTS.</div>
+
+    <div class="trust-strip" role="list">
+      <div class="trust-item" role="listitem">
+        <h4>Dated</h4>
+        <p>Every entry is committed to a version-controlled ledger the day we log it, with a visible commit history. No quiet edits.</p>
+      </div>
+      <div class="trust-item" role="listitem">
+        <h4>Source-linked</h4>
+        <p>Every entry links to the primary filing (agency docket, EDGAR, Federal Register, OIRA queue). Not a summary of a summary.</p>
+      </div>
+      <div class="trust-item" role="listitem">
+        <h4>Un-back-datable</h4>
+        <p>Each logged entry is mirrored to the Internet Archive and hashed via OpenTimestamps, alongside its Git commit, for independent proof of when it was logged.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <div class="section-lede">
+      <h2>The Ledger</h2>
+      <p>Organized into wings, by kind of filing. Each entry logs the date, the entity or agency, the stage of
+      the process, one line on why it matters, and a link to the primary source. Read the disclaimer under each
+      entry before you read anything into it.</p>
+    </div>
+
+    <!-- ============ WING: REGULATORY PIPELINE ============ -->
+    <section class="wing" id="regulatory-pipeline" aria-labelledby="rp-title">
+      <div class="wing-header">
+        <div class="wing-eyebrow">Wing 01</div>
+        <h2 class="wing-title" id="rp-title">Regulatory Pipeline</h2>
+        <p class="wing-sub">Rules in motion before they are rules. Proposals, comment windows, and items still
+        sitting inside the executive branch review process, logged as they move.</p>
+      </div>
+
+      <div class="entry-grid">
+
+        <article class="entry">
+          <div class="entry-date"><time datetime="2026-04-07">2026-04-07</time><span class="yr-lbl">received at OIRA</span></div>
+          <div class="entry-body">
+            <div class="entry-head">
+              <h3 class="entry-title">"Regulation Crypto" Safe Harbor</h3>
+              <span class="badge">At OIRA, pre-NPRM</span>
+            </div>
+            <p class="entry-meta"><strong>Agency:</strong> SEC, routed through the Office of Information and Regulatory Affairs (OMB)</p>
+            <p class="entry-why"><strong>Why it matters:</strong> A safe harbor of this kind would set the terms for token issuance and trading before the public ever sees a Notice of Proposed Rulemaking. The review sitting quietly at OIRA is itself the story.</p>
+            <p class="entry-source">Source: <a href="https://www.reginfo.gov/public/do/eoAdvancedSearchMain" target="_blank" rel="noopener">reginfo.gov, OIRA review queue</a></p>
+            <p class="entry-disclaimer">Logged as of 2026-04-07, per reginfo.gov OIRA queue. A timestamp, not a verdict. No public NPRM text exists as of this ledger entry.</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry-date"><time datetime="2026-07-27">2026-07-27</time><span class="yr-lbl">comment closes</span></div>
+          <div class="entry-body">
+            <div class="entry-head">
+              <h3 class="entry-title">"Payment Account" Tier, Proposed Rule</h3>
+              <span class="badge">Comment period open</span>
+            </div>
+            <p class="entry-meta"><strong>Agency:</strong> Federal Reserve</p>
+            <p class="entry-why"><strong>Why it matters:</strong> A new account tier for payment activity would reshape who can hold and move funds outside traditional deposit accounts, ahead of any bank product announcements.</p>
+            <p class="entry-source">Source: <a href="https://www.federalregister.gov/d/2026-10375" target="_blank" rel="noopener">federalregister.gov, doc. 2026-10375</a></p>
+            <p class="entry-disclaimer">Logged per federalregister.gov, document 2026-10375. Comment window closes 2026-07-27. A timestamp, not a verdict.</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry-date"><time datetime="2026-07-31">2026-07-31</time><span class="yr-lbl">comment closes</span></div>
+          <div class="entry-body">
+            <div class="entry-head">
+              <h3 class="entry-title">AI-Accuracy Suppression Policy Statement</h3>
+              <span class="badge">Comment period open</span>
+            </div>
+            <p class="entry-meta"><strong>Agency:</strong> Federal Trade Commission</p>
+            <p class="entry-why"><strong>Why it matters:</strong> A policy statement on suppression of AI-driven inaccuracy claims front-runs enforcement actions against AI products well before any complaint becomes public.</p>
+            <p class="entry-source">Source: <a href="https://www.federalregister.gov/d/2026-13628" target="_blank" rel="noopener">federalregister.gov, doc. 2026-13628</a></p>
+            <p class="entry-disclaimer">Logged per federalregister.gov, document 2026-13628. Comment window closes 2026-07-31. A timestamp, not a verdict.</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry-date"><time datetime="2026-07-01">2026-07-01</time><span class="yr-lbl">published</span></div>
+          <div class="entry-body">
+            <div class="entry-head">
+              <h3 class="entry-title">Event-Contract and Prediction-Market Reporting Rule</h3>
+              <span class="badge">Published</span>
+            </div>
+            <p class="entry-meta"><strong>Agency:</strong> Commodity Futures Trading Commission</p>
+            <p class="entry-why"><strong>Why it matters:</strong> New reporting requirements on event contracts land ahead of the next wave of prediction-market product launches and disputes.</p>
+            <p class="entry-source">Source: <a href="https://www.federalregister.gov/d/2026-13239" target="_blank" rel="noopener">federalregister.gov, doc. 2026-13239</a></p>
+            <p class="entry-disclaimer">Logged per federalregister.gov, document 2026-13239, published 2026-07-01. A timestamp, not a verdict.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============ WING: STABLECOIN AML BUILD-OUT ============ -->
+    <section class="wing" id="stablecoin-aml" aria-labelledby="aml-title">
+      <div class="wing-header">
+        <div class="wing-eyebrow">Wing 02</div>
+        <h2 class="wing-title" id="aml-title">Stablecoin AML Build-Out</h2>
+        <p class="wing-sub">The compliance scaffolding going up around stablecoins, agency by agency, comment
+        window by comment window.</p>
+      </div>
+
+      <div class="entry-grid">
+
+        <article class="entry">
+          <div class="entry-date"><time datetime="2026-08-04">2026-08-04</time><span class="yr-lbl">comment closes</span></div>
+          <div class="entry-body">
+            <div class="entry-head">
+              <h3 class="entry-title">BSA Standards for Insured Depositories</h3>
+              <span class="badge">Comment period open</span>
+            </div>
+            <p class="entry-meta"><strong>Agency:</strong> Federal Deposit Insurance Corporation</p>
+            <p class="entry-why"><strong>Why it matters:</strong> Bank Secrecy Act standards tailored to stablecoin-adjacent activity set the compliance bar banks will have to clear before they can custody or transact in stablecoins at scale.</p>
+            <p class="entry-source">Source: <a href="https://www.federalregister.gov/d/2026-11342" target="_blank" rel="noopener">federalregister.gov, doc. 2026-11342</a></p>
+            <p class="entry-disclaimer">Logged per federalregister.gov, document 2026-11342. Comment window closes 2026-08-04. A timestamp, not a verdict.</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry-date"><time datetime="2026-08-21">2026-08-21</time><span class="yr-lbl">comment closes</span></div>
+          <div class="entry-body">
+            <div class="entry-head">
+              <h3 class="entry-title">Joint Customer Identification Program NPRM</h3>
+              <span class="badge">Comment period open, 5-agency</span>
+            </div>
+            <p class="entry-meta"><strong>Agency:</strong> FinCEN, jointly with four additional federal regulators</p>
+            <p class="entry-why"><strong>Why it matters:</strong> A joint CIP rule spanning five agencies signals coordinated identity-verification standards for stablecoin issuers and custodians, well ahead of any enforcement headline.</p>
+            <p class="entry-source">Source: <a href="https://www.federalregister.gov/d/2026-12460" target="_blank" rel="noopener">federalregister.gov, doc. 2026-12460</a></p>
+            <p class="entry-disclaimer">Logged per federalregister.gov, document 2026-12460. Comment window closes 2026-08-21. A timestamp, not a verdict.</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry-date"><time datetime="2026-09-18">2026-09-18</time><span class="yr-lbl">comment closes</span></div>
+          <div class="entry-body">
+            <div class="entry-head">
+              <h3 class="entry-title">Stablecoin Reporting Forms</h3>
+              <span class="badge">Comment period open</span>
+            </div>
+            <p class="entry-meta"><strong>Agency:</strong> Federal Deposit Insurance Corporation</p>
+            <p class="entry-why"><strong>Why it matters:</strong> New reporting forms are the plumbing behind future enforcement. What gets required on a form today shapes what regulators can act on tomorrow.</p>
+            <p class="entry-source">Source: <a href="https://www.federalregister.gov/d/2026-14589" target="_blank" rel="noopener">federalregister.gov, doc. 2026-14589</a></p>
+            <p class="entry-disclaimer">Logged per federalregister.gov, document 2026-14589. Comment window closes 2026-09-18. A timestamp, not a verdict.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============ WING: CHARTERS & APPLICATIONS ============ -->
+    <section class="wing" id="charters" aria-labelledby="ch-title">
+      <div class="wing-header">
+        <div class="wing-eyebrow">Wing 03</div>
+        <h2 class="wing-title" id="ch-title">Charters and Applications</h2>
+        <p class="wing-sub">The OCC's digital-asset national trust charter pipeline, logged by date received.
+        A charter application is a company telling a regulator its plans, months before it tells the market.</p>
+      </div>
+
+      <div class="occ-table-wrap">
+        <table class="occ-table">
+          <thead>
+            <tr>
+              <th scope="col">Applicant</th>
+              <th scope="col">Date received</th>
+              <th scope="col">Stage</th>
+              <th scope="col">Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="entity">Payward, Inc. (Kraken)</td>
+              <td class="date">2026-05-08</td>
+              <td>Application pending, national trust charter</td>
+              <td><a href="https://www.occ.gov/topics/charters-and-licensing/index-charters-and-licensing.html" target="_blank" rel="noopener">occ.gov</a></td>
+            </tr>
+            <tr>
+              <td class="entity">Agora</td>
+              <td class="date">2026-04-20</td>
+              <td>Application pending, national trust charter</td>
+              <td><a href="https://www.occ.gov/topics/charters-and-licensing/index-charters-and-licensing.html" target="_blank" rel="noopener">occ.gov</a></td>
+            </tr>
+            <tr>
+              <td class="entity">EDX Trust</td>
+              <td class="date">2026-03-26</td>
+              <td>Application pending, national trust charter</td>
+              <td><a href="https://www.occ.gov/topics/charters-and-licensing/index-charters-and-licensing.html" target="_blank" rel="noopener">occ.gov</a></td>
+            </tr>
+            <tr>
+              <td class="entity">Revolut US</td>
+              <td class="date">2026-03-04</td>
+              <td>Application pending, national trust charter</td>
+              <td><a href="https://www.occ.gov/topics/charters-and-licensing/index-charters-and-licensing.html" target="_blank" rel="noopener">occ.gov</a></td>
+            </tr>
+            <tr>
+              <td class="entity">World Liberty Trust</td>
+              <td class="date">2026-01-06</td>
+              <td>Application pending, national trust charter</td>
+              <td><a href="https://www.occ.gov/topics/charters-and-licensing/index-charters-and-licensing.html" target="_blank" rel="noopener">occ.gov</a></td>
+            </tr>
+            <tr>
+              <td class="entity">Catena Trust Bank</td>
+              <td class="date">2026-05-18</td>
+              <td>Application pending, national trust charter</td>
+              <td><a href="https://www.occ.gov/topics/charters-and-licensing/index-charters-and-licensing.html" target="_blank" rel="noopener">occ.gov</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="occ-note">Why it matters: a national trust charter grants federal preemption and a single regulator instead of fifty state ones. Whoever clears this pipeline first sets the operating template for everyone behind them. Logged per the OCC digital-assets licensing tracker, occ.gov. A timestamp, not a verdict. Dates received do not imply approval, denial, or any particular timeline.</p>
+    </section>
+
+    <!-- ============ WING: SECURITIES & TOKENIZATION ============ -->
+    <section class="wing" id="securities" aria-labelledby="sec-title">
+      <div class="wing-header">
+        <div class="wing-eyebrow">Wing 04</div>
+        <h2 class="wing-title" id="sec-title">Securities and Tokenization</h2>
+        <p class="wing-sub">Exchange rule changes and issuer disclosures that quietly move the infrastructure
+        for tokenized markets forward.</p>
+      </div>
+
+      <div class="entry-grid">
+
+        <article class="entry">
+          <div class="entry-date"><time datetime="2026-03-18">2026-03-18</time><span class="yr-lbl">approved</span></div>
+          <div class="entry-body">
+            <div class="entry-head">
+              <h3 class="entry-title">Nasdaq 19b-4, Tokenized Securities Trading Rule</h3>
+              <span class="badge">Approved</span>
+            </div>
+            <p class="entry-meta"><strong>Entity:</strong> Nasdaq, via SEC rule filing SR-NASDAQ-2025-072</p>
+            <p class="entry-why"><strong>Why it matters:</strong> Approval of a tokenized-securities trading rule at a major exchange is the plumbing change that lets tokenized equities trade under existing market structure, ahead of any single tokenized listing making news.</p>
+            <p class="entry-source">Source: <a href="https://www.sec.gov/rules-regulations/self-regulatory-organization-rulemaking" target="_blank" rel="noopener">sec.gov, SRO rulemaking, SR-NASDAQ-2025-072</a></p>
+            <p class="entry-disclaimer">Logged as of 2026-03-18, per sec.gov SRO rule filing SR-NASDAQ-2025-072. A timestamp, not a verdict.</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry-date"><time datetime="2026-07-16">2026-07-16</time><span class="yr-lbl">filed</span></div>
+          <div class="entry-body">
+            <div class="entry-head">
+              <h3 class="entry-title">Stablecoin-Reserves Money Market Fund, 8-K</h3>
+              <span class="badge">Filed</span>
+            </div>
+            <p class="entry-meta"><strong:</strong></p>
+            <p class="entry-meta"><strong>Entity:</strong> State Street</p>
+            <p class="entry-why"><strong>Why it matters:</strong> A money market fund positioned around stablecoin reserves is a bet on where issuer cash will need to sit, filed before any product launch press release.</p>
+            <p class="entry-source">Source: <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=state+street&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener">EDGAR, State Street 8-K filings</a></p>
+            <p class="entry-disclaimer">Logged as of 2026-07-16, per SEC EDGAR 8-K filing. A timestamp, not a verdict.</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry-date"><time datetime="2026-07-08">2026-07-08</time><span class="yr-lbl">filed</span></div>
+          <div class="entry-body">
+            <div class="entry-head">
+              <h3 class="entry-title">SPAC Merger and NYSE Listing, 8-K</h3>
+              <span class="badge">Filed</span>
+            </div>
+            <p class="entry-meta"><strong>Entity:</strong> Securitize, EDGAR CIK 2034269</p>
+            <p class="entry-why"><strong>Why it matters:</strong> A tokenization infrastructure provider going public via SPAC and listing on the NYSE puts a public price and public disclosure obligations on a company that previously operated behind private filings.</p>
+            <p class="entry-source">Source: <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=2034269&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener">EDGAR, CIK 2034269</a></p>
+            <p class="entry-disclaimer">Logged as of 2026-07-08, per SEC EDGAR 8-K filing, CIK 2034269. A timestamp, not a verdict.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============ WING: DEADLINE MISSES ============ -->
+    <section class="wing" id="deadline-misses" aria-labelledby="dm-title">
+      <div class="wing-header">
+        <div class="wing-eyebrow">Wing 05</div>
+        <h2 class="wing-title" id="dm-title">Deadline Misses</h2>
+        <p class="wing-sub">Not every entry in this ledger is a filing. Some are the absence of one, logged
+        against the statutory clock that was supposed to produce it.</p>
+      </div>
+
+      <div class="entry-grid">
+        <article class="entry">
+          <div class="entry-date"><time datetime="2026-07-18">2026-07-18</time><span class="yr-lbl">deadline passed</span></div>
+          <div class="entry-body">
+            <div class="entry-head">
+              <h3 class="entry-title">GENIUS Act Coordinated Stablecoin Rulemaking</h3>
+              <span class="badge miss">Deadline missed, no rule issued</span>
+            </div>
+            <p class="entry-meta"><strong>Agencies:</strong> Six federal agencies named under the statute's coordinated rulemaking mandate</p>
+            <p class="entry-why"><strong>Why it matters:</strong> The statute set a joint deadline across six agencies for coordinated stablecoin rulemaking. That date passed with no unified rule published. A missed statutory deadline is itself a data point on regulatory pace and interagency coordination.</p>
+            <p class="entry-source">Source: <a href="https://www.congress.gov/search?q=GENIUS+Act" target="_blank" rel="noopener">congress.gov, GENIUS Act, statutory rulemaking deadline</a></p>
+            <p class="entry-disclaimer">Logged as an absence-against-deadline, as of 2026-07-18. A timestamp, not a verdict. A missed deadline does not by itself indicate intent, fault, or a revised timeline.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ WING: COMING ONLINE ============ -->
+    <section class="wing" id="coming-online" aria-labelledby="co-title">
+      <div class="wing-header">
+        <div class="wing-eyebrow">Wing 06</div>
+        <h2 class="wing-title" id="co-title">Coming Online</h2>
+        <p class="wing-sub">New lanes we are wiring collectors for. Not yet logging entries. Listed here so
+        you know what is coming before it arrives, same as everything else in this ledger.</p>
+      </div>
+
+      <div class="lane-grid">
+        <div class="lane-card">
+          <div class="lane-head"><span class="lane-name">Hardware</span><span class="badge wire">Wiring in progress</span></div>
+          <p class="lane-tag">FCC Equipment Authorization</p>
+          <p class="lane-desc">Front-runs new device and hardware launches, logged from the equipment authorization filing before any product page goes live.</p>
+        </div>
+        <div class="lane-card">
+          <div class="lane-head"><span class="lane-name">Product Names</span><span class="badge wire">Wiring in progress</span></div>
+          <p class="lane-tag">USPTO Trademark</p>
+          <p class="lane-desc">Front-runs brand and product name reveals, logged from the trademark application before any marketing announcement.</p>
+        </div>
+        <div class="lane-card">
+          <div class="lane-head"><span class="lane-name">Activist Stakes</span><span class="badge wire">Wiring in progress</span></div>
+          <p class="lane-tag">SEC 13D / 13G</p>
+          <p class="lane-desc">Front-runs activist campaigns and control fights, logged from the beneficial ownership filing before the open letter or press cycle.</p>
+        </div>
+        <div class="lane-card">
+          <div class="lane-head"><span class="lane-name">Litigation</span><span class="badge wire">Wiring in progress</span></div>
+          <p class="lane-tag">CourtListener / RECAP</p>
+          <p class="lane-desc">Front-runs major litigation, logged from the docket entry before the case becomes a headline.</p>
+        </div>
+        <div class="lane-card">
+          <div class="lane-head"><span class="lane-name">Influence</span><span class="badge wire">Wiring in progress</span></div>
+          <p class="lane-tag">Senate LDA and FARA</p>
+          <p class="lane-desc">Front-runs lobbying pushes and foreign-influence campaigns, logged from the disclosure filing before the policy fight goes public.</p>
+        </div>
+        <div class="lane-card">
+          <div class="lane-head"><span class="lane-name">Layoffs</span><span class="badge wire">Wiring in progress</span></div>
+          <p class="lane-tag">WARN Act, 60-day statutory lead</p>
+          <p class="lane-desc">Front-runs layoff announcements, logged from the required 60-day advance notice before the news coverage begins.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ METHOD ============ -->
+    <section class="wing" id="method" aria-labelledby="method-title">
+      <div class="wing-header" style="text-align:center;">
+        <div class="wing-eyebrow">How We Grade</div>
+        <h2 class="wing-title" id="method-title">The Receipt Score</h2>
+        <p class="wing-sub" style="margin:0 auto;">A methodology, not a rating agency. Here is exactly what
+        logging an entry means, and what it does not.</p>
+      </div>
+
+      <div class="method-box">
+        <div class="method-grid">
+          <div class="method-item">
+            <h4>Source class</h4>
+            <p>Tier one only. Primary government filing systems: Federal Register, OIRA and reginfo.gov, SEC EDGAR, agency dockets, and official licensing trackers. Secondary reporting is never treated as a filing.</p>
+          </div>
+          <div class="method-item">
+            <h4>Date logged</h4>
+            <p>The calendar date The Filing Room ingested and time-stamped the record, shown in the ledger. This is not the date a filing was made public by any other outlet.</p>
+          </div>
+          <div class="method-item">
+            <h4>Timestamp method</h4>
+            <p>Each entry's page state at logging time is committed to a version-controlled ledger with a visible Git commit hash, mirrored to the Internet Archive Wayback Machine, and hashed via OpenTimestamps for an independent, un-back-datable proof.</p>
+          </div>
+          <div class="method-item">
+            <h4>What we do not do</h4>
+            <p>We do not predict outcomes, assign probabilities, or offer investment, legal, or trading advice. We log filings and non-filings. What regulators, courts, or companies do next is theirs to write.</p>
+          </div>
+        </div>
+        <p class="method-rule">"We log filings and non-filings. We do not predict outcomes."</p>
+      </div>
+    </section>
+
+    <!-- ============ ACCESS / PRICING ============ -->
+    <section class="wing" id="access" aria-labelledby="access-title">
+      <div class="wing-header" style="text-align:center;">
+        <div class="wing-eyebrow">Access</div>
+        <h2 class="wing-title" id="access-title">Products and Pricing</h2>
+        <p class="wing-sub" style="margin:0 auto;">Honest pricing, no guarantees implied. You are paying for
+        speed, coverage, and citation quality, not for a forecast.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-tier">Free</div>
+          <div class="price-amt">$0<small>/mo</small></div>
+          <p class="price-desc">Weekly snapshot digest of new filings across all wings. Summary only, delayed.</p>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Reader</div>
+          <div class="price-amt">$17<small>/mo</small></div>
+          <p class="price-desc">Full ledger access, daily updates, source links on every entry.</p>
+        </div>
+        <div class="price-card highlight">
+          <div class="price-tier">Signal</div>
+          <div class="price-amt">$49<small>/mo</small></div>
+          <p class="price-desc">Real-time filing alerts by wing, exportable data, comment-deadline calendar.</p>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Newsroom / Fund</div>
+          <div class="price-amt">$199<small>/mo per seat</small></div>
+          <p class="price-desc">Multi-seat access, lightweight export, priority correction requests, citation-ready formatting.</p>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Enterprise / License</div>
+          <div class="price-amt">From $750<small>/mo</small></div>
+          <p class="price-desc">Full API access, custom wing build-outs, redistribution license, dedicated timestamp verification support.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="wordmark">THE FILING <span class="r">ROOM</span></div>
+        <p>A leg of Carter Enterprise LLC, under The Receipts Index. Dated public filings, logged before the headline.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Carter Enterprise</h5>
+        <a href="/trunkline">Trunkline</a>
+        <a href="/namebeam">Namebeam</a>
+        <a href="/receipts-index">The Receipts Index</a>
+        <a href="/receipts-api">The Receipts API</a>
+      </div>
+      <div class="footer-col">
+        <h5>The Ledger</h5>
+        <a href="#regulatory-pipeline">Regulatory Pipeline</a>
+        <a href="#stablecoin-aml">Stablecoin AML</a>
+        <a href="#charters">Charters</a>
+        <a href="#securities">Securities</a>
+      </div>
+      <div class="footer-col">
+        <h5>More</h5>
+        <a href="#deadline-misses">Deadline Misses</a>
+        <a href="#coming-online">Coming Online</a>
+        <a href="#method">Method</a>
+        <a href="#access">Access</a>
+      </div>
+      <div class="footer-col">
+        <h5>Standing Note</h5>
+        <p class="small">The Filing Room is published for informational and educational purposes only. Nothing here is legal, financial, tax, or investment advice.</p>
+        <p class="small">Every entry is a timestamp of a public record, not a prediction, a rating, or a recommendation to act.</p>
+      </div>
+    </div>
+
+    <div class="legal-strip">
+      <p>Educational use only. The Filing Room logs the existence and status of public filings and related government
+      records. It does not verify claims made within those filings, does not predict regulatory, legal, or corporate
+      outcomes, and is not a substitute for independent legal, financial, or professional advice. Filing stages
+      change. Comment periods close. Applications are approved, denied, or withdrawn. Confirm current status directly
+      with the primary source linked in each entry before relying on it for any decision.</p>
+      <div class="fine">
+        <span>&copy; <span id="year">2026</span> Carter Enterprise LLC. The Filing Room.</span>
+        <span>Real numbers. No hype. Receipts.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://thefilingroom.example/#organization",
+      "name": "The Filing Room",
+      "alternateName": "Carter Enterprise LLC, The Filing Room",
+      "description": "A dated public ledger that logs official filings before they become headlines.",
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "Carter Enterprise LLC"
+      },
+      "brand": {
+        "@type": "Brand",
+        "name": "The Receipts Index"
+      },
+      "slogan": "The public record before the headline."
+    },
+    {
+      "@type": "Dataset",
+      "@id": "https://thefilingroom.example/#dataset",
+      "name": "The Filing Room Ledger",
+      "description": "A dated, source-linked ledger of official regulatory filings, charter applications, securities disclosures, and statutory deadline misses, logged at time of discovery, before mainstream coverage.",
+      "creator": { "@id": "https://thefilingroom.example/#organization" },
+      "publisher": { "@id": "https://thefilingroom.example/#organization" },
+      "license": "https://thefilingroom.example/terms",
+      "temporalCoverage": "2026-01-06/..",
+      "dateModified": "2026-07-25",
+      "keywords": [
+        "regulatory filings",
+        "SEC",
+        "OCC",
+        "FDIC",
+        "FinCEN",
+        "Federal Reserve",
+        "CFTC",
+        "FTC",
+        "stablecoin regulation",
+        "GENIUS Act",
+        "digital asset charters",
+        "tokenized securities",
+        "public record ledger"
+      ],
+      "variableMeasured": [
+        "Filing date",
+        "Agency or entity",
+        "Filing stage",
+        "Primary source citation"
+      ],
+      "isAccessibleForFree": true,
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "text/html",
+          "contentUrl": "https://thefilingroom.example/"
+        }
+      ],
+      "hasPart": [
+        {
+          "@type": "Dataset",
+          "name": "Regulatory Pipeline",
+          "description": "Proposed rules and items under executive branch review, ahead of public rulemaking."
+        },
+        {
+          "@type": "Dataset",
+          "name": "Stablecoin AML Build-Out",
+          "description": "Bank Secrecy Act and customer identification rulemaking for stablecoin-adjacent activity."
+        },
+        {
+          "@type": "Dataset",
+          "name": "Charters and Applications",
+          "description": "OCC national trust charter applications for digital asset entities, logged by date received."
+        },
+        {
+          "@type": "Dataset",
+          "name": "Securities and Tokenization",
+          "description": "Exchange rule filings and issuer disclosures related to tokenized securities and stablecoin infrastructure."
+        },
+        {
+          "@type": "Dataset",
+          "name": "Deadline Misses",
+          "description": "Logged absences against statutory rulemaking deadlines."
+        }
+      ]
+    },
+    {
+      "@type": "ClaimReview",
+      "url": "https://thefilingroom.example/#regulatory-pipeline",
+      "claimReviewed": "The SEC has proposed a Regulation Crypto safe harbor.",
+      "itemReviewed": {
+        "@type": "CreativeWork",
+        "datePublished": "2026-04-07",
+        "author": { "@type": "Organization", "name": "SEC, via OIRA review queue" }
+      },
+      "author": { "@id": "https://thefilingroom.example/#organization" },
+      "datePublished": "2026-04-07",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "Pre-decisional",
+        "alternateName": "At OIRA review, no public NPRM issued",
+        "bestRating": "Final Rule",
+        "worstRating": "No Filing"
+      }
+    },
+    {
+      "@type": "ClaimReview",
+      "url": "https://thefilingroom.example/#deadline-misses",
+      "claimReviewed": "The GENIUS Act's coordinated stablecoin rulemaking deadline was met.",
+      "itemReviewed": {
+        "@type": "CreativeWork",
+        "datePublished": "2026-07-18",
+        "author": { "@type": "Organization", "name": "Six federal agencies under GENIUS Act rulemaking mandate" }
+      },
+      "author": { "@id": "https://thefilingroom.example/#organization" },
+      "datePublished": "2026-07-18",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "Deadline Missed",
+        "alternateName": "No coordinated rule issued as of statutory deadline",
+        "bestRating": "Deadline Met",
+        "worstRating": "Deadline Missed"
+      }
+    }
+  ]
+}
+</script>
+
+<script>
+(function(){
+  "use strict";
+
+  // Footer year
+  var yearEl = document.getElementById('year');
+  if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
+
+  // Mobile nav toggle
+  var toggle = document.getElementById('navToggle');
+  var links = document.getElementById('navLinks');
+  if (toggle && links) {
+    toggle.addEventListener('click', function(){
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    links.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // Scrollspy for nav highlighting
+  var navAnchors = Array.prototype.slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
+  var sections = navAnchors
+    .map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); })
+    .filter(Boolean);
+
+  if ('IntersectionObserver' in window && sections.length) {
+    var map = {};
+    navAnchors.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var id = entry.target.id;
+        var link = map[id];
+        if (!link) return;
+        if (entry.isIntersecting) {
+          navAnchors.forEach(function(a){ a.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+
+  // Copy-citation buttons (added dynamically per entry for lean markup)
+  document.querySelectorAll('.entry').forEach(function(entry){
+    var titleEl = entry.querySelector('.entry-title');
+    var dateEl = entry.querySelector('time');
+    var sourceLink = entry.querySelector('.entry-source a');
+    if (!titleEl || !dateEl || !sourceLink) return;
+
+    var footer = document.createElement('div');
+    footer.className = 'entry-footer';
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy citation';
+
+    btn.addEventListener('click', function(){
+      var citation = 'The Filing Room. "' + titleEl.textContent.trim() + '." Logged ' +
+        dateEl.getAttribute('datetime') + '. Source: ' + sourceLink.href;
+      var done = function(){
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(function(){
+          btn.textContent = 'Copy citation';
+          btn.classList.remove('copied');
+        }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(citation).then(done).catch(function(){
+          fallbackCopy(citation, done);
+        });
+      } else {
+        fallbackCopy(citation, done);
+      }
+    });
+
+    footer.appendChild(btn);
+    entry.querySelector('.entry-body').appendChild(footer);
+  });
+
+  function fallbackCopy(text, done){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch(e){}
+    document.body.removeChild(ta);
+    done();
+  }
+
+})();
+</script>
+
+</body>
+</html>
