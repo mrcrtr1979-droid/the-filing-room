@@ -1,0 +1,12 @@
+# The Filing Room
+
+> The Filing Room (receiptsindex.com) is a dated, source-linked public ledger of official regulatory filings, charter applications, and disclosures. It logs the document, the date, and the agency. Every entry is committed to a version-controlled ledger the day it is logged, mirrored to the Internet Archive, and hashed via OpenTimestamps so it cannot be back-dated. The public record before the headline.
+
+The Filing Room is a leg of Carter Enterprise LLC (Sheridan, WY), the network behind Trunkline (crypto education, trunkline.money), Namebeam (AI visibility checks, namebeam.ai), The Receipts Index (thereceiptsindex.com), and The Receipts API (api.receiptsindex.com).
+
+## Main sections
+
+- [The Filing Room](https://receiptsindex.com/): the ledger home, dated and source-linked
+- [Method and access](https://receiptsindex.com/): how entries are logged, hashed, and mirrored
+
+Real numbers. No hype. Receipts. Education, not financial advice.
