@@ -298,6 +298,35 @@
     filter:drop-shadow(0 18px 34px rgba(0,0,0,.55));
   }
   .wordmark.ce-word{ text-align:center; }
+
+  /* Mobile hero fit (2026-07-29) */
+  @media(max-width:520px){
+    .wordmark.ce-word{ font-size:clamp(24px,7.4vw,40px); }
+    .ce-coin{ width:min(240px,58vw); }
+  }
+  /* ===== Standard Carter single-box footer (matches trunkline) 2026-07-29 ===== */
+  footer.ce-foot{ border-top:1px solid rgba(227,179,65,.35); background:linear-gradient(0deg,#07121f 0%,var(--navy) 100%); padding:34px 18px 42px; margin-top:36px; }
+  .ce-net{ max-width:960px; margin:0 auto; text-align:center; }
+  .ce-net .ce-kick{ font-family:var(--mono); color:#E3B341; font-size:11px; letter-spacing:.2em; text-transform:uppercase; margin-bottom:6px; }
+  .ce-net .ce-parent{ color:var(--off); font-weight:800; letter-spacing:.12em; font-size:.9rem; margin-bottom:16px; }
+  .ce-net .ce-legs{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px 12px; margin:0 0 16px; padding:0; }
+  .ce-net .ce-legs a{ color:#E3B341; text-decoration:none; font-weight:700; letter-spacing:.05em; font-size:.8rem; border:1px solid rgba(227,179,65,.45); border-radius:6px; padding:7px 13px; }
+  .ce-net .ce-legs a:hover{ background:rgba(227,179,65,.12); border-color:#E3B341; }
+  .ce-net .ce-social{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px 20px; margin:0 0 18px; padding:0; }
+  .ce-net .ce-social a{ color:#8ea9cc; text-decoration:none; font-size:.76rem; letter-spacing:.08em; text-transform:uppercase; }
+  .ce-net .ce-social a:hover{ color:#E3B341; }
+  .ce-net .ce-legal{ color:#8ea9cc; font-size:.72rem; letter-spacing:.04em; margin-bottom:6px; }
+  .ce-net .ce-copy{ color:#8ea9cc; font-size:.72rem; margin-bottom:14px; }
+  .ce-net .ce-fine{ color:#5c7595; font-size:.68rem; line-height:1.55; max-width:720px; margin:0 auto; }
+  @media(max-width:520px){
+    footer.ce-foot{ padding:30px 14px 38px; }
+    .ce-net .ce-kick{ letter-spacing:.09em; font-size:9.5px; }
+    .ce-net .ce-legs{ gap:8px 8px; }
+    .ce-net .ce-legs a{ font-size:.7rem; padding:6px 9px; letter-spacing:.02em; }
+    .ce-net .ce-social{ gap:6px 14px; }
+    .ce-net .ce-social a{ font-size:.7rem; letter-spacing:.04em; }
+    .ce-net .ce-legal{ overflow-wrap:anywhere; }
+  }
 </style>
 </head>
 <body>
@@ -1524,68 +1553,28 @@
 
 </main>
 
-<footer>
-  <div class="wrap">
-<div style="text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px">Part of the Carter Enterprise Network</div><nav class="ce-legs" style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 26px;margin:0 0 18px;padding-top:4px">
-<a href="https://trunkline.money" style="color:#E3B341;text-decoration:none;font-weight:700;letter-spacing:.08em;font-size:.92rem">TRUNKLINE</a>
-<a href="https://namebeam.ai" style="color:#E3B341;text-decoration:none;font-weight:700;letter-spacing:.08em;font-size:.92rem">NAMEBEAM</a>
-<a href="https://thereceiptsindex.com" style="color:#E3B341;text-decoration:none;font-weight:700;letter-spacing:.08em;font-size:.92rem">THE RECEIPTS INDEX</a>
-<a href="https://receiptsindex.com" style="color:#E3B341;text-decoration:none;font-weight:700;letter-spacing:.08em;font-size:.92rem">THE FILING ROOM</a>
-<a href="https://receiptindex.com" style="color:#E3B341;text-decoration:none;font-weight:700;letter-spacing:.08em;font-size:.92rem">RECEIPTS API</a>
-</nav>
-<div style="text-align:center;color:#8ea9cc;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;margin-bottom:10px">A Carter Enterprise Company</div>
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="wordmark">THE FILING <span class="r">ROOM</span></div>
-        <p>A leg of Carter Enterprise LLC, under The Receipts Index. Dated public filings, logged before the headline.</p>
-      </div>
-      <div class="footer-col">
-        <h5>Carter Enterprise</h5>
-        <a href="/trunkline">Trunkline</a>
-        <a href="/namebeam">Namebeam</a>
-        <a href="/receipts-index">The Receipts Index</a>
-        <a href="/receipts-api">The Receipts API</a>
-      </div>
-      <div class="footer-col">
-        <h5>The Ledger</h5>
-        <a href="#regulatory-pipeline">Regulatory Pipeline</a>
-        <a href="#stablecoin-aml">Stablecoin AML</a>
-        <a href="#charters">Charters</a>
-        <a href="#securities">Securities</a>
-      </div>
-      <div class="footer-col">
-        <h5>More</h5>
-        <a href="#deadline-misses">Deadline Misses</a>
-        <a href="#coming-online">Coming Online</a>
-        <a href="#insider-intent">Insider Intent</a>
-        <a href="#merger-distress">Merger Radar</a>
-        <a href="#biotech-catalyst">Biotech</a>
-        <a href="#trademarks">Trademarks</a>
-        <a href="#hardware">Hardware</a>
-        <a href="#litigation">Litigation</a>
-        <a href="#activist-influence">Activist</a>
-        <a href="#layoffs">Layoffs</a>
-        <a href="#method">Method</a>
-        <a href="#access">Access</a>
-      </div>
-      <div class="footer-col">
-        <h5>Standing Note</h5>
-        <p class="small">The Filing Room is published for informational and educational purposes only. Nothing here is legal, financial, tax, or investment advice.</p>
-        <p class="small">Every entry is a timestamp of a public record, not a prediction, a rating, or a recommendation to act.</p>
-      </div>
-    </div>
-
-    <div class="legal-strip">
-      <p>Educational use only. The Filing Room logs the existence and status of public filings and related government
-      records. It does not verify claims made within those filings, does not predict regulatory, legal, or corporate
-      outcomes, and is not a substitute for independent legal, financial, or professional advice. Filing stages
-      change. Comment periods close. Applications are approved, denied, or withdrawn. Confirm current status directly
-      with the primary source linked in each entry before relying on it for any decision.</p>
-      <p style="margin:14px 0 0;font-size:11.5px;color:var(--off-faint)">Carter Enterprise LLC &middot; 30 N Gould St, Suite 65270, Sheridan, WY 82801</p><div class="fine">
-        <span>&copy; <span id="year">2026</span> Carter Enterprise LLC. The Filing Room.</span>
-        <span>Real numbers. No hype. Receipts.</span>
-      </div>
-    </div>
+<footer class="ce-foot">
+  <div class="ce-net">
+    <div class="ce-kick">Part of the Carter Enterprise Network</div>
+    <div class="ce-parent">CARTER ENTERPRISE LLC</div>
+    <nav class="ce-legs">
+      <a href="https://trunkline.money" target="_blank" rel="noopener">TRUNKLINE</a>
+      <a href="https://namebeam.ai" target="_blank" rel="noopener">NAMEBEAM</a>
+      <a href="https://thereceiptsindex.com" target="_blank" rel="noopener">THE RECEIPTS INDEX</a>
+      <a href="https://receiptsindex.com" target="_blank" rel="noopener">THE FILING ROOM</a>
+      <a href="https://api.receiptsindex.com" target="_blank" rel="noopener">RECEIPTS API</a>
+    </nav>
+    <nav class="ce-social">
+      <a href="https://x.com/Alpha_Vault_AI" target="_blank" rel="noopener">X</a>
+      <a href="https://www.tiktok.com/@alpha_vault_ai" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://www.youtube.com/@alphavaultAI" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://linktr.ee/alpha_vaultAI" target="_blank" rel="noopener">Linktree</a>
+      <a href="https://trunkline.money/affiliates/" target="_blank" rel="noopener">Affiliates</a>
+      <a href="https://trunkline.money/contact/" target="_blank" rel="noopener">Contact &amp; Support</a>
+    </nav>
+    <div class="ce-legal">Carter Enterprise LLC &middot; 30 N Gould St, Suite 65270, Sheridan, WY 82801</div>
+    <div class="ce-copy">&copy; <span id="year">2026</span> Carter Enterprise LLC. Real numbers. No hype. Receipts. Education, not financial advice.</div>
+    <div class="ce-fine">The Filing Room logs the existence and status of public filings and related government records for educational purposes only. It does not verify claims made within those filings, predict regulatory or legal outcomes, or provide legal, financial, or professional advice. Confirm current status with the primary source linked in each entry before relying on it.</div>
   </div>
 </footer>
 
