@@ -281,16 +281,18 @@
   .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
   /* ===== Carter standard rotating sunburst hero (2026-07-29) ===== */
-  header.masthead{ position:relative; overflow:hidden; }
   header.masthead > .wrap{ position:relative; z-index:1; }
+  .ce-hero{ position:relative; overflow:hidden; padding:6px 0 16px; }
+  .ce-hero > *{ position:relative; z-index:1; }
   .ce-rays{
-    position:absolute; inset:-45% -25%; z-index:0; pointer-events:none;
+    position:absolute; inset:-75% -35%; z-index:0; pointer-events:none;
     background:
       repeating-conic-gradient(from 0deg, rgba(227,179,65,.16) 0deg 1.2deg, transparent 1.2deg 10deg),
       repeating-conic-gradient(from 5deg, rgba(227,179,65,.07) 0deg .7deg, transparent .7deg 2.5deg),
-      radial-gradient(circle at 50% 42%, rgba(227,179,65,.20), transparent 62%);
+      radial-gradient(circle at 50% 44%, rgba(227,179,65,.20), transparent 60%);
     animation:ce-spin 240s linear infinite;
   }
+  .ce-hero .ce-rays{ z-index:0; }
   @keyframes ce-spin{ to{ transform:rotate(360deg); } }
   @media (prefers-reduced-motion: reduce){ .ce-rays{ animation:none; } }
   .ce-coin{
@@ -359,13 +361,14 @@
 </nav>
 
 <header class="masthead">
-  <div class="ce-rays" aria-hidden="true"></div>
      <div class="wrap">
     <div class="kicker">Carter Enterprise LLC &nbsp;/&nbsp; <a href="/receipts-index">The Receipts Index</a></div>
-    <img class="ce-coin" src="logo_filingroom_avatar.png" alt="The Filing Room emblem, a gold medallion">
+    <div class="ce-hero"><div class="ce-rays" aria-hidden="true"></div>
+     <img class="ce-coin" src="logo_filingroom_avatar.png" alt="The Filing Room emblem, a gold medallion">
      <h1 class="wordmark ce-word">THE FILING <span class="r">ROOM</span></h1>
     <div class="wordmark-rule"></div>
     <p class="ethos">The public record before the headline.</p>
+     </div>
     <p class="what-it-is">
       The Filing Room is a dated, source-linked ledger of official regulatory filings, charter applications,
       and disclosures. We log the document, the date, and the agency. What happens next is not our department.
