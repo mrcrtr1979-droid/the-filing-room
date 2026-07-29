@@ -45,6 +45,22 @@
     -webkit-font-smoothing:antialiased;
   }
 
+  /* Carter brand sunburst rays (added 2026-07-29) - faint gold rays behind the
+     hero, radially masked to fade out. Sits behind content, non-interactive. */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:
+      repeating-conic-gradient(from 0deg at 50% 30%,
+        rgba(212,175,55,0.06) 0deg 0.7deg,
+        rgba(212,175,55,0) 0.7deg 6deg);
+    -webkit-mask-image: radial-gradient(135% 100% at 50% 30%, #000 0%, rgba(0,0,0,0.5) 38%, transparent 74%);
+            mask-image: radial-gradient(135% 100% at 50% 30%, #000 0%, rgba(0,0,0,0.5) 38%, transparent 74%);
+  }
+
   a{color:var(--gold); text-decoration-color: rgba(212,175,55,0.4); text-underline-offset:3px;}
   a:hover{text-decoration-color: var(--gold);}
   a:focus-visible, button:focus-visible, summary:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
