@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Receipts Index. Public Ledger and Data-Lease Feed</title>
+<meta name="description" content="The Receipts Index landing page. Live-ledger telemetry read from source files, and the data-lease feed for agents, gated behind a plain-text x402 challenge. Static record, not a live socket. 200 USD per month founding rate.">
+<style>
+  :root {
+    --navy: #0a1a2f;
+    --navy-2: #0d2440;
+    --card: #0e2140;
+    --text: #F6F8FC;
+    --gold: #E3B341;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--navy);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.5;
+  }
+
+  a { color: var(--gold); }
+
+  /* ---------- Locked Carter sunburst, copied verbatim from
+     memory/namebeam-customer-zero-ledger.html, lines 118 to 129.
+     36 rays every 10 degrees, the 3-6-9 cipher. Do not redraw. ---------- */
+  .ce-hero{ position:relative; overflow:hidden; padding:26px 0 20px; }
+  .ce-hero > *{ position:relative; z-index:1; }
+  .ce-rays{
+    position:absolute; inset:-75% -35%; z-index:0; pointer-events:none;
+    background:
+      repeating-conic-gradient(from 0deg, rgba(227,179,65,.16) 0deg 1.2deg, transparent 1.2deg 10deg),
+      repeating-conic-gradient(from 5deg, rgba(227,179,65,.07) 0deg .7deg, transparent .7deg 2.5deg),
+      radial-gradient(circle at 50% 44%, rgba(227,179,65,.20), transparent 60%);
+    animation:ce-spin 240s linear infinite;
+  }
+  @keyframes ce-spin{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .ce-rays{ animation:none; } }
+  /* ---------- end locked sunburst block ---------- */
+
+  /* Header / hero. Not position:fixed in this build. If a future pass
+     makes .site-header fixed, add padding-top to .ce-hero equal to the
+     header's rendered height, per the Carter Site Standard fixed-header
+     padding rule. Left off here on purpose since header is static. */
+  .site-header {
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+    border-bottom: 1px solid var(--gold);
+    text-align: center;
+    padding-bottom: 1.5rem;
+  }
+
+  .lockup-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .lockup-tile {
+    width: 88px;
+    height: 88px;
+    border-radius: 14px;
+    background: var(--navy-2);
+    border: 1px solid rgba(227, 179, 65, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .lockup-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .lockup-fallback {
+    display: none;
+    color: var(--gold);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0 4px;
+  }
+
+  .hero-band-index {
+    color: var(--gold);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-align: center;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 0.6rem;
+  }
+
+  .wordmark {
+    font-size: clamp(2.1rem, 5.5vw, 3.4rem);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0.5rem 0 0;
+  }
+
+  .wordmark .white { color: var(--text); }
+  .wordmark .gold { color: var(--gold); }
+
+  .kicker {
+    color: var(--text);
+    opacity: 0.75;
+    font-size: 0.85rem;
+    margin-top: 0.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .slogan {
+    color: var(--gold);
+    font-style: italic;
+    font-size: 1rem;
+    margin-top: 0.9rem;
+    opacity: 0.92;
+  }
+
+  /* Banner */
+  .banner {
+    background: #081627;
+    border-bottom: 1px solid rgba(227, 179, 65, 0.35);
+    text-align: center;
+    padding: 0.85rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text);
+    opacity: 0.9;
+  }
+
+  /* Body */
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 1rem;
+  }
+
+  section {
+    margin-bottom: 3.5rem;
+  }
+
+  .band-index {
+    color: var(--gold);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-align: center;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title {
+    color: var(--gold);
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .section-note {
+    max-width: 46rem;
+    margin: 0 auto 1.75rem;
+    text-align: center;
+    font-size: 0.92rem;
+    opacity: 0.85;
+  }
+
+  .section-note p { margin: 0 0 0.9rem; }
+  .section-note p:last-child { margin-bottom: 0; }
+
+  /* Six stat cards */
+  .stats-primary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.1rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid rgba(227, 179, 65, 0.25);
+    border-radius: 8px;
+    padding: 1.1rem 1rem;
+    text-align: center;
+  }
+
+  .stat-card .stat-label {
+    color: var(--gold);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .stat-card .stat-value {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  /* Nine-item detail list, all sourced figures with citations */
+  .detail-list {
+    background: var(--card);
+    border: 1px solid rgba(227, 179, 65, 0.25);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0 0 1.5rem;
+  }
+
+  .detail-row {
+    padding: 0.75rem 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    display: grid;
+    grid-template-columns: minmax(150px, auto) minmax(70px, auto) 1fr;
+    gap: 0.3rem 1rem;
+    align-items: baseline;
+  }
+
+  .detail-row:last-child { border-bottom: none; }
+
+  .detail-label { color: var(--text); opacity: 0.85; }
+  .detail-value { color: var(--gold); font-weight: 700; }
+  .detail-source { color: var(--text); opacity: 0.5; font-size: 0.7rem; }
+
+  @media (max-width: 700px) {
+    .detail-row { grid-template-columns: 1fr; }
+  }
+
+  .pulse-link {
+    text-align: center;
+    font-size: 0.92rem;
+  }
+
+  .static-record-note {
+    text-align: center;
+    font-size: 0.8rem;
+    opacity: 0.6;
+    margin-top: 1rem;
+  }
+
+  /* Data-lease / x402 band */
+  .x402-explain p {
+    max-width: 44rem;
+    margin: 0 auto 1rem;
+    font-size: 0.92rem;
+    opacity: 0.88;
+  }
+
+  pre.x402-json {
+    background: #081627;
+    border: 1px solid rgba(227, 179, 65, 0.3);
+    border-radius: 8px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    line-height: 1.5;
+    color: var(--text);
+    max-width: 60rem;
+    margin: 0 auto 2rem;
+  }
+
+  .feed-card {
+    background: var(--card);
+    border: 1px solid rgba(227, 179, 65, 0.25);
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+
+  .feed-card h3 {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.95rem;
+    margin: 0 0 0.9rem;
+  }
+
+  .feed-card dl {
+    display: grid;
+    grid-template-columns: minmax(110px, auto) 1fr;
+    gap: 0.4rem 1rem;
+    font-size: 0.86rem;
+    margin: 0 0 1.1rem;
+  }
+
+  .feed-card dt {
+    color: var(--text);
+    opacity: 0.6;
+  }
+
+  .feed-card dd {
+    margin: 0;
+    color: var(--text);
+  }
+
+  .feed-card .field-list {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    opacity: 0.75;
+    word-break: break-word;
+  }
+
+  .feed-card .contact-line {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .feed-card .contact-line a {
+    font-weight: 700;
+  }
+
+  /* Footer */
+  .site-footer {
+    border-top: 1px solid var(--gold);
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center;
+    background: #081627;
+  }
+
+  .footer-kicker {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .legs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 1.35rem;
+    margin-bottom: 1.25rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .legs a {
+    text-decoration: none;
+    font-size: 0.88rem;
+  }
+
+  .legs a:hover {
+    text-decoration: underline;
+  }
+
+  .legal {
+    color: var(--text);
+    opacity: 0.6;
+    font-size: 0.78rem;
+    margin: 0 0 0.35rem;
+  }
+
+  .viewed-at {
+    color: var(--text);
+    opacity: 0.4;
+    font-size: 0.72rem;
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header ce-hero">
+  <div class="ce-rays"></div>
+  <p class="hero-band-index">Band 1 of 3</p>
+  <div class="lockup-wrap">
+    <div class="lockup-tile">
+      <!-- LOCKED ASSET: add from Carter_Logos_v2 at deploy, never redraw.
+           Expected file: logo_receiptsindex_lockup.png, copied in as
+           assets/carter-lockup.png. This img is a placeholder; onerror
+           hides it and reveals the text fallback below so the page still
+           reads correctly with the asset missing. -->
+      <img src="assets/carter-lockup.png" alt="Receipts Index lockup mark" class="lockup-img"
+           onerror="this.style.display='none'; document.getElementById('lockup-fallback').style.display='flex';">
+      <div id="lockup-fallback" class="lockup-fallback">RECEIPTS INDEX MARK</div>
+    </div>
+  </div>
+  <div class="wordmark"><span class="white">RECEIPTS</span> <span class="gold">INDEX</span></div>
+  <p class="kicker">Public ledger and data-lease feed for citation checks</p>
+  <p class="slogan">Receipts the machines cite.</p>
+</header>
+
+<div class="banner">All figures below dated at source. This page is a static record, not a live socket.</div>
+
+<main>
+
+  <section id="telemetry">
+    <p class="band-index">Band 2 of 3</p>
+    <h1 class="section-title">Live-Record Telemetry</h1>
+    <div class="section-note">
+      <p>These counts come from the same source files behind the full pulse dashboard, read at build time. Void and dark organs print at the same size as the ones marked ok. Nothing on this page polls a server after it is saved.</p>
+    </div>
+
+    <div class="stats-primary">
+      <div class="stat-card">
+        <div class="stat-label">Organs Total</div>
+        <div class="stat-value">217</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Organs OK</div>
+        <div class="stat-value">179</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Organs Void</div>
+        <div class="stat-value">29</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Organs Dark</div>
+        <div class="stat-value">9</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Alignment</div>
+        <div class="stat-value">82%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Module Selftests</div>
+        <div class="stat-value">24 / 24</div>
+      </div>
+    </div>
+
+    <div class="detail-list">
+      <div class="detail-row">
+        <span class="detail-label">Organs total</span>
+        <span class="detail-value">217</span>
+        <span class="detail-source">atlas_live_state.json, generated 2026-08-18T14:34:53Z</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Organs ok</span>
+        <span class="detail-value">179</span>
+        <span class="detail-source">atlas_live_state.json, generated 2026-08-18T14:34:53Z</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Organs void</span>
+        <span class="detail-value">29</span>
+        <span class="detail-source">atlas_live_state.json, generated 2026-08-18T14:34:53Z</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Organs dark</span>
+        <span class="detail-value">9</span>
+        <span class="detail-source">atlas_live_state.json, generated 2026-08-18T14:34:53Z</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Alignment</span>
+        <span class="detail-value">82%</span>
+        <span class="detail-source">atlas_live_state.json, generated 2026-08-18T14:34:53Z</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Module selftests</span>
+        <span class="detail-value">24 / 24</span>
+        <span class="detail-source">observatory/system_health_report.json, checked 2026-08-18T14:34:47Z</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Ledgers tracked</span>
+        <span class="detail-value">22</span>
+        <span class="detail-source">observatory/health_check_state.json</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Ledger entries summed</span>
+        <span class="detail-value">308</span>
+        <span class="detail-source">line counts summed across 22 files in observatory/health_check_state.json</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Master log entries</span>
+        <span class="detail-value">10</span>
+        <span class="detail-source">ReceiptsIndex_Master.log, line count at build time</span>
+      </div>
+    </div>
+
+    <p class="pulse-link"><a href="pulse/">Full pulse dashboard</a>, with the nine newest ledger events and full source citations.</p>
+    <p class="static-record-note">All figures dated at source. This page is a static record.</p>
+  </section>
+
+  <section id="data-lease">
+    <p class="band-index">Band 3 of 3</p>
+    <h2 class="section-title">Data-Lease Feed for Agents</h2>
+    <div class="x402-explain">
+      <p>Some feed endpoints on this domain are gated. An agent or a person that requests a gated path gets back an HTTP 402 response, the status code reserved for payment required. The payment terms live in a Base64 encoded PAYMENT-REQUIRED response header, the current x402 protocol's own wire format for this response. The same terms also print below as plain JSON, readable by any agent or person, describing what the endpoint would need before it serves data.</p>
+      <p>Nothing in that response arms a live payment. Every field that would need a real network, asset, payTo address, or account reads the literal string <code>TBD-NOT-ARMED</code>, on purpose, so no client that finds this route and tries can be charged. Below is the real, current 402 challenge body a gated path returns, printed exactly as the route serves it, plus one added note explaining the same thing in plain words.</p>
+    </div>
+
+    <pre class="x402-json">{
+  &quot;x402Version&quot;: 2,
+  &quot;resource&quot;: {
+    &quot;url&quot;: &quot;https://api.receiptsindex.com/v1/feed/founding-partner&quot;,
+    &quot;description&quot;: &quot;Data-Lease Founding Partner / Beta Feed tier. Bulk monthly snapshot export of the citation corpus (85 rows, 2026-07-29 to 2026-08-18, growing). Founding rate 200 USD per month, ruled 2026-08-18.&quot;,
+    &quot;mimeType&quot;: &quot;application/json&quot;
+  },
+  &quot;accepts&quot;: [
+    {
+      &quot;scheme&quot;: &quot;exact&quot;,
+      &quot;network&quot;: &quot;TBD-NOT-ARMED&quot;,
+      &quot;asset&quot;: &quot;TBD-NOT-ARMED&quot;,
+      &quot;amount&quot;: &quot;TBD-NOT-ARMED&quot;,
+      &quot;payTo&quot;: &quot;TBD-NOT-ARMED&quot;,
+      &quot;maxTimeoutSeconds&quot;: 60,
+      &quot;extra&quot;: {
+        &quot;tier&quot;: &quot;founding_partner_beta_feed&quot;,
+        &quot;pricing_status&quot;: &quot;200 USD per month founding rate, ruled by Terry 2026-08-18. Payment rails not armed.&quot;,
+        &quot;corpus_rows&quot;: 85,
+        &quot;corpus_date_range_start&quot;: &quot;2026-07-29&quot;,
+        &quot;corpus_date_range_end&quot;: &quot;2026-08-18&quot;,
+        &quot;facilitator&quot;: &quot;none, no live x402/ACP/UCP facilitator connection&quot;
+      }
+    }
+  ],
+  &quot;note&quot;: &quot;Payment rails are not armed for this route. No live Stripe or crypto facilitator connection exists for any network, asset, or payTo value here; every field that would need one reads the placeholder TBD-NOT-ARMED. This route speaks the x402 v2 PaymentRequired challenge shape for agent discoverability only, it settles no payment. Contact mailto:terry@namebeam.ai for the Founding Partner / Beta Feed tier today, Terry negotiates and invoices by hand.&quot;
+}</pre>
+
+    <div class="feed-card">
+      <h3>Founding Partner / Beta Feed</h3>
+      <dl>
+        <dt>Corpus size</dt>
+        <dd>85 rows</dd>
+        <dt>Date range</dt>
+        <dd>2026-07-29 to 2026-08-18, growing</dd>
+        <dt>Cadence</dt>
+        <dd>Monthly snapshot export</dd>
+        <dt>Price</dt>
+        <dd>200 USD per month founding rate</dd>
+        <dt>Fields</dt>
+        <dd class="field-list">date_utc, check_id, business, niche, market, engine, prompt_variant, run, business_mentioned, competitors_named, sources_cited, run_channel, flags</dd>
+      </dl>
+      <p class="contact-line">Contact <a href="mailto:terry@namebeam.ai">terry@namebeam.ai</a> for this tier. There is no self-checkout armed yet. A person answers, prices, and invoices by hand.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p class="footer-kicker">A Carter Enterprise Company.</p>
+  <ul class="legs">
+    <li><a href="https://trunkline.money">trunkline.money</a></li>
+    <li><a href="https://namebeam.ai">namebeam.ai</a></li>
+    <li><a href="https://thereceiptsindex.com">thereceiptsindex.com</a></li>
+    <li><a href="https://receiptsindex.com">receiptsindex.com</a></li>
+    <li><a href="https://api.receiptsindex.com">api.receiptsindex.com</a></li>
+  </ul>
+  <p class="legal">Carter Enterprise LLC, 30 N Gould St, Ste 65270, Sheridan, WY 82801.</p>
+  <p class="viewed-at" id="viewed-at"></p>
+</footer>
+
+<script>
+  (function () {
+    var el = document.getElementById('viewed-at');
+    if (el) {
+      var now = new Date();
+      el.textContent = 'Viewed in this browser at ' + now.toISOString();
+    }
+  })();
+</script>
+
+</body>
+</html>
