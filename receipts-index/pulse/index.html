@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Receipts Pulse Dashboard. Receipts Index Ledger Telemetry</title>
+<meta name="description" content="Public telemetry dashboard for the Receipts Index leg. Organ counts, module selftest results, ledger totals, and the newest ledger feed entries, each dated at the source. Static record, not a live socket.">
+<style>
+  :root {
+    --navy: #0a1a2f;
+    --navy-2: #0d2440;
+    --card: #0e2140;
+    --text: #F6F8FC;
+    --gold: #E3B341;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--navy);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.5;
+  }
+
+  a { color: var(--gold); }
+
+  /* ---------- Locked Carter sunburst, copied verbatim from
+     memory/namebeam-customer-zero-ledger.html, lines 118 to 129.
+     36 rays every 10 degrees, the 3-6-9 cipher. Do not redraw. ---------- */
+  .ce-hero{ position:relative; overflow:hidden; padding:26px 0 20px; }
+  .ce-hero > *{ position:relative; z-index:1; }
+  .ce-rays{
+    position:absolute; inset:-75% -35%; z-index:0; pointer-events:none;
+    background:
+      repeating-conic-gradient(from 0deg, rgba(227,179,65,.16) 0deg 1.2deg, transparent 1.2deg 10deg),
+      repeating-conic-gradient(from 5deg, rgba(227,179,65,.07) 0deg .7deg, transparent .7deg 2.5deg),
+      radial-gradient(circle at 50% 44%, rgba(227,179,65,.20), transparent 60%);
+    animation:ce-spin 240s linear infinite;
+  }
+  @keyframes ce-spin{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .ce-rays{ animation:none; } }
+  /* ---------- end locked sunburst block ---------- */
+
+  /* Header */
+  .site-header {
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+    border-bottom: 1px solid var(--gold);
+    text-align: center;
+  }
+
+  .wordmark {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0.5rem 0 0;
+  }
+
+  .wordmark .white { color: var(--text); }
+  .wordmark .gold { color: var(--gold); }
+
+  .kicker {
+    color: var(--text);
+    opacity: 0.75;
+    font-size: 0.85rem;
+    margin-top: 0.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Snapshot banner */
+  .banner {
+    background: #081627;
+    border-bottom: 1px solid rgba(227, 179, 65, 0.35);
+    text-align: center;
+    padding: 0.85rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text);
+    opacity: 0.9;
+  }
+
+  /* Body */
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 1rem;
+  }
+
+  section {
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    color: var(--gold);
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .section-note {
+    max-width: 46rem;
+    margin: 0 auto 1.75rem;
+    text-align: center;
+    font-size: 0.92rem;
+    opacity: 0.85;
+  }
+
+  /* Six stat cards */
+  .stats-primary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.1rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid rgba(227, 179, 65, 0.25);
+    border-radius: 8px;
+    padding: 1.25rem 1.1rem;
+    text-align: center;
+  }
+
+  .stat-card .stat-label {
+    color: var(--gold);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.6rem;
+    font-weight: 700;
+  }
+
+  .stat-card .stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 0.6rem;
+  }
+
+  .stat-card .stat-source {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    color: var(--text);
+    opacity: 0.55;
+    line-height: 1.4;
+  }
+
+  /* Three-item ledger coverage strip */
+  .stats-secondary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.1rem;
+  }
+
+  .stats-secondary .stat-card .stat-value {
+    font-size: 1.5rem;
+  }
+
+  /* Nine-row ledger feed */
+  .feed {
+    background: var(--card);
+    border: 1px solid rgba(227, 179, 65, 0.25);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .feed-row {
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    display: grid;
+    grid-template-columns: minmax(180px, auto) minmax(160px, auto) 1fr;
+    gap: 0.4rem 1rem;
+    align-items: start;
+  }
+
+  .feed-row:last-child { border-bottom: none; }
+
+  .feed-ts {
+    color: var(--text);
+    opacity: 0.6;
+  }
+
+  .feed-type {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .feed-desc {
+    color: var(--text);
+  }
+
+  .feed-src {
+    grid-column: 1 / -1;
+    color: var(--text);
+    opacity: 0.4;
+    font-size: 0.7rem;
+    margin-top: 0.15rem;
+  }
+
+  @media (max-width: 700px) {
+    .feed-row { grid-template-columns: 1fr; }
+  }
+
+  .about p {
+    max-width: 44rem;
+    margin: 0 auto 1rem;
+    font-size: 0.92rem;
+    opacity: 0.85;
+  }
+
+  .about { text-align: center; }
+
+  /* Footer */
+  .site-footer {
+    border-top: 1px solid var(--gold);
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center;
+    background: #081627;
+  }
+
+  .footer-kicker {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .legs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 1.35rem;
+    margin-bottom: 1.25rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .legs a {
+    text-decoration: none;
+    font-size: 0.88rem;
+  }
+
+  .legs a:hover {
+    text-decoration: underline;
+  }
+
+  .legal {
+    color: var(--text);
+    opacity: 0.6;
+    font-size: 0.78rem;
+    margin: 0 0 0.35rem;
+  }
+
+  .viewed-at {
+    color: var(--text);
+    opacity: 0.4;
+    font-size: 0.72rem;
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header ce-hero">
+  <div class="ce-rays"></div>
+  <div class="wordmark"><span class="white">RECEIPTS</span> <span class="gold">INDEX</span></div>
+  <div class="kicker">Receipts Pulse. Ledger Telemetry</div>
+</header>
+
+<div class="banner">Snapshot generated 2026-08-18T15:02:40Z. All figures dated at source. This page is a static record, not a live socket.</div>
+
+<main>
+
+  <section>
+    <h1 class="section-title">System Snapshot</h1>
+    <p class="section-note">Organ counts, module selftest results, and ledger totals, read at build time from three source files. Void and dark organs print at the same size as the ones marked ok. Nothing here updates after this file is saved.</p>
+
+    <div class="stats-primary">
+      <div class="stat-card">
+        <div class="stat-label">Organs Total</div>
+        <div class="stat-value">217</div>
+        <div class="stat-source">atlas_live_state.json<br>generated 2026-08-18T14:34:53Z</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Organs OK</div>
+        <div class="stat-value">179</div>
+        <div class="stat-source">atlas_live_state.json<br>generated 2026-08-18T14:34:53Z</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Organs Void</div>
+        <div class="stat-value">29</div>
+        <div class="stat-source">atlas_live_state.json<br>generated 2026-08-18T14:34:53Z</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Organs Dark</div>
+        <div class="stat-value">9</div>
+        <div class="stat-source">atlas_live_state.json<br>generated 2026-08-18T14:34:53Z</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Alignment</div>
+        <div class="stat-value">82%</div>
+        <div class="stat-source">atlas_live_state.json<br>generated 2026-08-18T14:34:53Z</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Module Selftests</div>
+        <div class="stat-value">24 / 24</div>
+        <div class="stat-source">observatory/system_health_report.json<br>checked 2026-08-18T14:34:47Z</div>
+      </div>
+    </div>
+
+    <div class="stats-secondary">
+      <div class="stat-card">
+        <div class="stat-label">Ledgers Tracked</div>
+        <div class="stat-value">22</div>
+        <div class="stat-source">observatory/health_check_state.json</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Ledger Entries Summed</div>
+        <div class="stat-value">308</div>
+        <div class="stat-source">line counts summed across 22 files in observatory/health_check_state.json</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Master Log Entries</div>
+        <div class="stat-value">10</div>
+        <div class="stat-source">ReceiptsIndex_Master.log, line count at build time</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Master Ledger Feed</h2>
+    <p class="section-note">The nine newest events found across ReceiptsIndex_Master.log and five observatory ledgers: anchor_log.jsonl, x402_bridge_log.jsonl, tee_attestation_log.jsonl, tier_gate_log.jsonl, and ledger_anchor_log.jsonl. Hashes are truncated to twelve characters. Fields resembling a token, key, signature, secret value, email address, or file path are left out of the line.</p>
+
+    <div class="feed">
+      <div class="feed-row">
+        <span class="feed-ts">2026-08-18T14:33:40.808547Z</span>
+        <span class="feed-type">tee_attestation_receipt</span>
+        <span class="feed-desc">FAILED. aws_nitro enclave measurement mismatch against local baseline (demo fixture).</span>
+        <span class="feed-src">source: tee_attestation_log.jsonl, ReceiptsIndex_Master.log</span>
+      </div>
+      <div class="feed-row">
+        <span class="feed-ts">2026-08-18T14:33:40.787923Z</span>
+        <span class="feed-type">tee_attestation_receipt</span>
+        <span class="feed-desc">VERIFIED. aws_nitro enclave measurements matched local baseline (demo fixture).</span>
+        <span class="feed-src">source: tee_attestation_log.jsonl, ReceiptsIndex_Master.log</span>
+      </div>
+      <div class="feed-row">
+        <span class="feed-ts">2026-08-18T14:33:40Z</span>
+        <span class="feed-type">anchor_snapshot</span>
+        <span class="feed-desc">22 ledger leaves merged, tee attestation batch included. Merkle root 5ba1b7830a4c (truncated).</span>
+        <span class="feed-src">source: anchor_log.jsonl</span>
+      </div>
+      <div class="feed-row">
+        <span class="feed-ts">2026-08-18T14:33:24.383480Z</span>
+        <span class="feed-type">tee_attestation_receipt</span>
+        <span class="feed-desc">SHAPE INVALID. aws_nitro PCR fields not valid 96-hex digests (demo fixture).</span>
+        <span class="feed-src">source: tee_attestation_log.jsonl, ReceiptsIndex_Master.log</span>
+      </div>
+      <div class="feed-row">
+        <span class="feed-ts">2026-08-18T14:33:24.356635Z</span>
+        <span class="feed-type">tee_attestation_receipt</span>
+        <span class="feed-desc">SHAPE INVALID. aws_nitro PCR fields not valid 96-hex digests (demo fixture).</span>
+        <span class="feed-src">source: tee_attestation_log.jsonl, ReceiptsIndex_Master.log</span>
+      </div>
+      <div class="feed-row">
+        <span class="feed-ts">2026-08-18T14:33:24Z</span>
+        <span class="feed-type">anchor_snapshot</span>
+        <span class="feed-desc">22 ledger leaves merged, tee attestation batch registered. Merkle root a29dbf277838 (truncated).</span>
+        <span class="feed-src">source: anchor_log.jsonl</span>
+      </div>
+      <div class="feed-row">
+        <span class="feed-ts">2026-08-18T14:24:25.904776Z</span>
+        <span class="feed-type">x402_bridge_settlement_receipt</span>
+        <span class="feed-desc">SETTLED (simulated). Receipts API developer tier, 79 USD, settlement id 7c340f234969 (truncated).</span>
+        <span class="feed-src">source: x402_bridge_log.jsonl, ReceiptsIndex_Master.log</span>
+      </div>
+      <div class="feed-row">
+        <span class="feed-ts">2026-08-18T14:24:25.878565Z</span>
+        <span class="feed-type">x402_bridge_challenge_receipt</span>
+        <span class="feed-desc">CHALLENGE, http 402. Receipts API developer tier, payment required, no proof submitted (simulated).</span>
+        <span class="feed-src">source: x402_bridge_log.jsonl, ReceiptsIndex_Master.log</span>
+      </div>
+      <div class="feed-row">
+        <span class="feed-ts">2026-08-18T14:24:26Z</span>
+        <span class="feed-type">anchor_snapshot</span>
+        <span class="feed-desc">21 ledger leaves merged, x402 bridge batch included. Merkle root 36a271a8ca66 (truncated).</span>
+        <span class="feed-src">source: anchor_log.jsonl</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="about">
+    <h2 class="section-title">About This Page</h2>
+    <p>This dashboard is built once, from files read at the timestamp in the banner above. It is not a live socket and does not poll any server after it is saved. Every number carries the file it came from and the timestamp on that file.</p>
+    <p>Void and dark organ counts are printed at the same size and weight as the ok count. A missing module or an unparsed ledger line is reported as a count, not hidden. This page makes no income claims and offers no guarantees about future results.</p>
+    <p>Sunburst background copied verbatim from the locked Carter Enterprise brand file. Thirty-six rays, the 3-6-9 cipher, never redrawn by hand.</p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p class="footer-kicker">A Carter Enterprise Company.</p>
+  <ul class="legs">
+    <li><a href="https://trunkline.money">trunkline.money</a></li>
+    <li><a href="https://namebeam.ai">namebeam.ai</a></li>
+    <li><a href="https://thereceiptsindex.com">thereceiptsindex.com</a></li>
+    <li><a href="https://receiptsindex.com">receiptsindex.com</a></li>
+    <li><a href="https://api.receiptsindex.com">api.receiptsindex.com</a></li>
+  </ul>
+  <p class="legal">Carter Enterprise LLC, 30 N Gould St, Ste 65270, Sheridan, WY 82801.</p>
+  <p class="viewed-at" id="viewed-at"></p>
+</footer>
+
+<script>
+  (function () {
+    var el = document.getElementById('viewed-at');
+    if (el) {
+      var now = new Date();
+      el.textContent = 'Viewed in this browser at ' + now.toISOString();
+    }
+  })();
+</script>
+
+</body>
+</html>
