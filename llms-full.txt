@@ -1,0 +1,60 @@
+# Receipts Index and Carter Enterprise LLC, full machine manifest
+> Plain-text manifest for AI assistants and agents, dated 2026-08-19. Every claim below is checkable at the linked page it came from. No trust scores are issued anywhere in this network. Nothing here is a guarantee of rankings, revenue, or outcomes. Education, not financial advice.
+
+## 1. What serves at this domain
+
+- receiptsindex.com (root): The Filing Room. A dated, source-linked public ledger of official regulatory filings, charter applications, and disclosures. Entries are committed to a version-controlled ledger the day they are logged, mirrored to the Internet Archive, and hashed via OpenTimestamps so they cannot be back-dated.
+- receiptsindex.com/receipts-index/ : The Receipts Index landing tree. Live-ledger telemetry read from source files, printed the same size whether the reading is a win or a loss. Public pulse dashboard at /receipts-index/pulse/ . Static record, not a live socket.
+- api.receiptsindex.com : The Receipts API. In agentic commerce the agent, the buyer, and the payment are verified by existing rails; the merchant and the claim are left open. The Receipts API checks the business behind the transaction and the claim behind the recommendation against primary public sources and returns a dated attestation. Verified as of a date, per a named source. Not a guarantee.
+
+## 2. The Receipts API, what it checks and what it returns
+
+Sources checked: a global legal entity registry (GLEIF), domain registration records (RDAP), and public Certificate Transparency logs. All three are free and public. If a source blocks a query, the result says so plainly; a result is never faked.
+
+Output format: a schema.org ClaimReview-style JSON-LD object stating what was checked, what the source said, and when. Optionally issuable as a W3C Verifiable Credential (VC 2.0) for systems that need a signed, portable credential. No numeric trust score is issued, by design.
+
+Illustrative example, as published on the live API page (placeholder merchant, each field filled from the named public source at the moment of a real check):
+
+{
+  "@context": "https://schema.org",
+  "@type": "ClaimReview",
+  "datePublished": "2026-07-25",
+  "author": { "@type": "Organization", "name": "The Receipts API" },
+  "claimReviewed": "Public registration and domain signals for Acme Supply Co. as of 2026-07-25.",
+  "itemReviewed": { "@type": "Organization", "name": "Acme Supply Co." },
+  "reviewRating": {
+    "@type": "Rating",
+    "ratingValue": "Signals reported, not a score. See detail.",
+    "alternateName": "No trust score is issued."
+  }
+}
+
+Positioning: designed to sit alongside Google's AP2 and the OpenAI/Stripe Agentic Commerce Protocol, both of which leave merchant and claim verification open. An attestation is meant to travel with a checkout payload as an added signal, not to replace either protocol.
+
+## 3. Pricing, exactly as published on the live pages, nothing else
+
+From api.receiptsindex.com:
+- Know Your Merchant check: free browser tool, GLEIF, RDAP and CT lookups, dated result card, copyable receipt, rate limited, no login.
+- Claim-check API: 0.30 to 2.00 USD per call, priced by source depth and freshness, volume tiers available.
+- AI-Trustable Badge: monthly, recurring re-verification, priced by merchant volume, quote on contact.
+- Enterprise: custom.
+
+From receiptsindex.com/receipts-index/ :
+- Data-Lease feed, Founding Partner rate: 200 USD per month.
+
+Payment rails status, stated plainly: the x402 route on the data-lease feed serves a plain-text challenge and is v2-conformant, but settlement is NOT armed as of 2026-08-19. No live payment object exists behind it. Fields read TBD on purpose. An agent that attempts settlement today will not be charged and will not receive access; contact the address below instead.
+
+## 4. Related Carter Enterprise LLC properties
+
+- namebeam.ai : Namebeam, AI visibility checks. Runs the same dated question across five engines (ChatGPT, Claude, Perplexity, Gemini, Google AI) and hands back the raw dated transcript of what each said. Public citation ledger at namebeam.ai/citation-ledger.html and a dated study at namebeam.ai/ai-citation-study.html. Public repository of readings: github.com/mrcrtr1979-droid/namebeam-visibility-index, committed daily, cannot be backfilled.
+- thereceiptsindex.com : The Receipts Index, the dated editorial record. Real numbers, wins and losses printed the same size.
+- shop.namebeam.ai : Maker's Receipt, apparel with a public record page per design.
+- trunkline.money : Trunkline, crypto education. Education only, no trading advice.
+
+## 5. Contact and identity
+
+Carter Enterprise LLC, 30 N Gould St, Ste 65270, Sheridan, WY 82801.
+Email: hello@namebeam.ai
+Founder: Terry Carter.
+
+Real numbers. No hype. Receipts. AI answers and public records change over time; confirm current results at the dated source linked in each entry.
